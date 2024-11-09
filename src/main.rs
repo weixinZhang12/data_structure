@@ -1,12 +1,12 @@
-use sqlist::Sqlite;
-mod stack;
-mod sqlist;
+use linklist::LinkList;
+
+mod linklist;
 fn main() {
-    let mut sqlite: Sqlite<i32> = Sqlite::new();
-    sqlite.max_length=1;
-    sqlite.push(1);
-    sqlite.push(2);
-    sqlite.push(3);
-    sqlite.delete_by_index(0);
-    println!("{}\n {:#?}", sqlite.max_length, sqlite);
+let mut a=LinkList::new();
+a.push(12);
+a.push(23232312);
+a.pop();
+a.pop();
+a.pop();
+println!("{:?}",a);
 }
