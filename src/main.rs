@@ -1,12 +1,11 @@
-use linklist::LinkList;
+use b_tree::b_tree::Btree;
 
+mod b_tree;
 mod linklist;
 fn main() {
-let mut a=LinkList::new();
-a.push(12);
-a.push(23232312);
-a.pop();
-a.pop();
-a.pop();
-println!("{:?}",a);
+    let mut tree = Btree::new();
+    tree.push(1);
+    tree.push(2);
+    tree.push(3);
+    println!("{:?}", tree)
 }
