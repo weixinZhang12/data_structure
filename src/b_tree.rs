@@ -60,8 +60,8 @@ pub mod b_tree {
                 .bold()
             )
         }
-        pub fn get_par(&mut self, index: usize) -> Option<i32> {
-            if index >= MAX_INDEX || index == 0 {
+        pub fn get_partent(&mut self, index: usize) -> Option<i32> {
+            if index >= MAX_INDEX || index == 0 ||index==1{
                 if index == 0 {
                     eprintln!(
                         "{}",
@@ -81,7 +81,7 @@ pub mod b_tree {
                         .red()
                         .bold()
                     )
-                }
+                };
                 return None;
             }
 
