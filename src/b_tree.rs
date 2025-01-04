@@ -31,6 +31,10 @@ pub mod b_tree {
     }
     impl Btree {
         pub fn new() -> Self {
+            println!(
+                "{}",
+                "提示：欢迎使用树结构，树结构默认索引从1开始".green().bold()
+            );
             Btree {
                 arr: [None; MAX_INDEX],
             }
@@ -61,7 +65,7 @@ pub mod b_tree {
             )
         }
         pub fn get_partent(&mut self, index: usize) -> Option<i32> {
-            if index >= MAX_INDEX || index == 0 ||index==1{
+            if index >= MAX_INDEX || index == 0 || index == 1 {
                 if index == 0 {
                     eprintln!(
                         "{}",
@@ -81,7 +85,7 @@ pub mod b_tree {
                         .red()
                         .bold()
                     )
-                };
+                }
                 return None;
             }
 
@@ -123,6 +127,10 @@ pub mod b_tree {
                 return self.arr[target_index];
             }
             None
+        }
+        ///返回只读迭代器。无法访问到第一个元素（索引为0的元素）
+        pub fn get_iter(&self) -> &[Option<i32>] {
+            &self.arr[1..]
         }
     }
 }
