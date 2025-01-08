@@ -10,16 +10,21 @@ mod recursion;
 mod hash;
 fn main() {
    let mut map=hashmap::new(3);
-   map.put(0, "t".to_string());
-   map.put(1, "t".to_string());
-   map.put(2, "t".to_string());
-   map.put(4, "t".to_string());
-   map.put(5, "t".to_string());
-   map.put(6, "t".to_string());
-   map.put(8, "t".to_string());
-   for i in 0..10000000 {
+   map.put(0, "0".to_string());
+   map.put(1, "1".to_string());
+   map.put(2, "2".to_string());
+   map.put(4, "3".to_string());
+   map.put(5, "4".to_string());
+   map.put(6, "5".to_string());
+   map.put(8, "6".to_string());
+   for i in 0..15 {
        map.put(i, "val".to_string());
    }
+   println!("{:?}",map.get(1));
+   println!("{:?}",map.delete(1));
+   println!("{:?}",map.delete(1));
+   println!("{:?}",map.delete(14));
+   println!("{:?}",map.delete(15));
    println!("{:#?}",map);
   
 }

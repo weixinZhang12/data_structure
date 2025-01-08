@@ -34,7 +34,7 @@ pub mod hash_link {
             let hash = self.hash(key);
             self.buckets[hash] = Some(hash_node::new(key, val));
         }
-        ///如果原地址已经存在了，寻找新的地址
+        ///如果原地址已经存在了，寻找新的地址，该方法为递归方法，有栈溢出的风险
         fn find_new_index(&self, key: usize, first_index: usize) -> Option<usize> {
             let mut key = key;
             // 递归结束条件
@@ -50,38 +50,70 @@ pub mod hash_link {
                 Some(key)
             }
         }
-        fn find_new_key(&self,key: usize)->Option<usize>{
-            let mut key=self.hash(key);
-            let mut first=self.hash(key);
+        // 寻找新的位置，该方法位迭代方法
+        fn find_new_key(&self, key: usize) -> Option<usize> {
+            let mut key = self.hash(key);
+            let mut first = self.hash(key);
             while self.buckets[key].is_some() {
-                key=self.hash(key+1);
-                if key==first {
-                   return None; 
+                key = self.hash(key + 1);
+                if key == first {
+                    return None;
                 }
             }
             Some(key)
+        }
+        pub fn get(&mut self, key: usize) -> Option<hash_node> {
+            let mut hash = self.hash(key);
+            let first_key = self.hash(key);
+            while self.buckets[hash].is_some() {
+                if self.buckets[hash].as_ref().unwrap().key == key {
+                    return self.buckets[hash].clone();
+                } else {
+                    hash = self.hash(hash + 1);
+                    if hash == first_key {
+                        return None;
+                    }
+                }
+            }
+            None
+        }
+        pub fn delete(&mut self, key: usize) -> Option<hash_node> {
+            let mut hash = self.hash(key);
+            let first_key = self.hash(key);
+            while self.buckets[hash].is_some() {
+                if self.buckets[hash].as_ref().unwrap().key == key {
+                    return self.buckets[hash].take();
+                } else {
+                    hash = self.hash(hash + 1);
+                    if hash == first_key {
+                        return None;
+                    }
+                }
+            }
+            None
         }
         ///插入数据，当散列表空间不足的时候自动增加空间
         pub fn put(&mut self, key: usize, val: String) {
             let mut key = key;
             let hash = self.hash(key);
-            if let Some(v)=&self.buckets[hash] {
+            if let Some(v) = &self.buckets[hash] {
                 // 键重复的时候需要提前结束
-                if v.key==key {
+                if v.key == key {
                     return;
                 }
                 let new_index = self.find_new_key(key);
+                // 如果找不到空位置证明已经满了
                 if new_index.is_none() {
                     self.resize(self.max_len * 2);
                     self.put(key, val);
                 } else {
+                    // 否则直接插入
                     self.buckets[new_index.unwrap()] = Some(hash_node::new(key, val));
-                    self.len+=1;
+                    self.len += 1;
                 }
             } else {
                 self.buckets[hash] = Some(hash_node::new(key, val));
-                self.len+=1;
-
+                self.len += 1;
             }
         }
         // 重新分配哈希的大小
